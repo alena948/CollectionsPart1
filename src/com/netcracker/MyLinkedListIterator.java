@@ -1,5 +1,8 @@
+package com.netcracker;
+
+import com.netcracker.MyLinkedList;
+
 import java.util.Iterator;
-import java.util.function.Consumer;
 
 /**
  * Created by Алёна on 27.11.2016.

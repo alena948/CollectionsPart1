@@ -1,15 +1,25 @@
+package com.netcracker;
+
+import com.netcracker.ILinkedList;
+
 import java.util.Iterator;
-import java.util.LinkedList;
 
 /**
  * Created by Алёна on 27.11.2016.
  */
 public class MyLinkedList<E> implements ILinkedList<E> {
 
-    private Node<E> head = null;
-    private Node<E> tail = null;
-    private Node<E> currNode = null;
-    private int size = 0;
+    private Node<E> head;
+    private Node<E> tail;
+    private Node<E> currNode;
+    private int size;
+
+    public MyLinkedList() {
+        this.head = null;
+        this.tail = null;
+        this.currNode = null;
+        this.size = 0;
+    }
 
     @Override
     public void add(Object element) {
@@ -85,19 +95,63 @@ public class MyLinkedList<E> implements ILinkedList<E> {
     }
 
     @Override
-    public int indexOf(Object element) {
-        
-        return 0;
+    public int indexOf(E element) {
+        int index = 0;
+        currNode = head;
+        for (int i = 0; i < size; i++) {
+            if (currNode.getElement() == element)
+                index = i + 1;
+            currNode = currNode.getNextNode();
+        }
+        if (index == 0)
+            System.out.println("Collection hasn't this element");
+        return index;
     }
 
     @Override
     public E remove(int index) {
-        return null;
+        E elem = head.getElement();
+        if (index < 0 || index > size() + 1)
+            System.out.println("Invalid index!");
+        else {
+            currNode = head;
+            Node<E> tmpNode = head;
+            if (index == 0) {
+                head = currNode.getNextNode();
+                currNode = null;
+            } else {
+                for (int i = 0; i < index; i++) {
+                    tmpNode = currNode;
+                    currNode = currNode.getNextNode();
+                }
+                if (index == size - 1)
+                    tail = tmpNode;
+                tmpNode.setNextNode(currNode.getNextNode());
+                elem = currNode.getElement();
+                currNode = null;
+            }
+        }
+        size--;
+        return elem;
     }
 
     @Override
-    public E set(int index, Object element) {
-        return null;
+    public void set(int index, E element) {
+        E elem = head.getElement();
+        if (index < 0 || index > size() + 1)
+            System.out.println("Invalid index!");
+        else {
+            currNode = head;
+            Node<E> tmpNode = head;
+            if (index == 0) {
+                currNode.setElement(element);
+            } else {
+                for (int i = 0; i < index; i++) {
+                    currNode = currNode.getNextNode();
+                }
+                currNode.setElement(element);
+            }
+        }
     }
 
     @Override
@@ -132,8 +186,14 @@ public class MyLinkedList<E> implements ILinkedList<E> {
     }
 
     @Override
-    public E[] toArray() {
-        return null;
+    public Object[] toArray() {
+        Object[] array = new Object[size];
+        currNode = head;
+        for (int i = 0; i < size; i++) {
+            array[i] = currNode.getElement();
+            currNode = currNode.getNextNode();
+        }
+        return array;
     }
 
     public E getHead() {
